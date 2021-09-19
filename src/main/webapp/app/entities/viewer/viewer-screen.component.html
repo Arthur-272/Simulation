@@ -1,0 +1,23 @@
+<div class="engine-wrapper">
+  <canvas #rendererCanvas id="renderCanvas"></canvas>
+  <div class="row">
+    <div class="col-6"></div>
+    <div class="col-6">
+      <button (click)="renderMode('fit')" class="btn btn-primary btn-sm" title="Fit to screen">
+        <img src="../../../content/images/button/fit_to_screen.png" class="button" />
+      </button>
+
+      <button (click)="renderMode('shaded')" class="btn btn-primary btn-sm" title="Shaded">
+        <img src="../../../content/images/button/shaded.png" class="button" />
+      </button>
+
+      <button (click)="renderMode('wireframe')" class="btn btn-primary btn-sm" title="Wireframe">
+        <img src="../../../content/images/button/wireframe.png" class="button" />
+      </button>
+
+      <button (click)="renderMode('shadedWireframe')" class="btn btn-primary btn-sm" title="Shaded wireframe">
+        <img src="../../../content/images/button/wireframe_shaded.png" class="button" />
+      </button>
+    </div>
+  </div>
+</div>

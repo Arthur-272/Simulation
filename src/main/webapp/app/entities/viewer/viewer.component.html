@@ -1,0 +1,214 @@
+<div>
+  <div class="row">
+    <div class="col-10">
+      <div class="row">
+        <div class="col-md-auto">
+          <button (click)="onPressUpload()" class="btn btn-primary btn-sm" title="Upload">
+            <fa-icon [icon]="faCloudUploadAlt"></fa-icon>
+          </button>
+
+          <button (click)="onPressRun()" class="btn btn-primary btn-sm" title="Simulate">
+            <fa-icon [icon]="faPlay"></fa-icon>
+          </button>
+
+          <button (click)="onPressDownload()" class="btn btn-primary btn-sm" title="Download">
+            <fa-icon [icon]="faCloudDownloadAlt"></fa-icon>
+          </button>
+
+          <button (click)="onPressTerminate()" class="btn btn-primary btn-sm" title="Terminate">
+            <fa-icon [icon]="faTrashAlt"></fa-icon>
+          </button>
+
+          <button (click)="onPressRefresh()" class="btn btn-primary btn-sm" title="Reload">
+            <fa-icon [icon]="faSync"></fa-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col-2" id="help">
+      <button class="btn btn-primary btn-sm" title="Help">
+        <fa-icon [icon]="faQuestionCircle" routerLink="/Demo"></fa-icon>
+      </button>
+      <!--      <div>-->
+      <!--        <div ngbDropdown style="" title="Help">-->
+      <!--          <button class="btn btn-primary btn-sm" ngbDropdownToggle>-->
+      <!--            <fa-icon [icon]="faQuestionCircle"></fa-icon>-->
+      <!--          </button>-->
+      <!--          <div ngbDropdownMenu>-->
+      <!--            <div *ngFor="let option of helpOptions">-->
+      <!--              <button class="btn btn-sm" title="{{ option }}" routerLink="/{{ option }}">-->
+      <!--                {{ option }}-->
+      <!--              </button>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+    </div>
+  </div>
+  <hr/>
+
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-2 p-3 mb-2 bg-light text-dark">
+        <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" class="example-tree" *ngIf="models.length">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+            <li class="mat-tree-node row">
+              <div class="col-8" *ngIf="modelSelected === node; else elseBlock">
+                <!--                <input type="radio" name="radioB" (click)="onModelSelected(node)"/>-->
+                <button mat-raised-button (click)="onModelSelected(node)" style="background-color: #a7a7a7">
+                  <i class='fas fa-spinner fa-pulse fa-spin fa-3x'></i>{{ node.name }}
+                </button>
+              </div>
+              <ng-template #elseBlock>
+                <div class="col-8">
+                  <!--                  <input type="radio" name="radioB" (click)="onModelSelected(node)"/>-->
+                  <button mat-raised-button (click)="onModelSelected(node)">
+                    {{ node.name }}
+                  </button>
+                </div>
+              </ng-template>
+              <div class="col-4">
+                <button (click)="onClickVisibility(node.name)" *ngIf="visibility.get(node.name)">
+                  <fa-icon [icon]="faEye"></fa-icon>
+                </button>
+                <button (click)="onClickVisibility(node.name)" *ngIf="!visibility.get(node.name)">
+                  <fa-icon [icon]="faEyeSlash"></fa-icon>
+                </button>
+              </div>
+            </li>
+          </mat-tree-node>
+
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <li>
+              <div class="mat-tree-node">
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                  <!-- <mat-icon class="mat-icon-rtl-mirror"> -->
+                  <div [ngSwitch]="treeControl.isExpanded(node)">
+                    <div *ngSwitchCase="true">
+                      <fa-icon [icon]="faChevronDown"></fa-icon>
+                    </div>
+                    <div *ngSwitchCase="false">
+                      <fa-icon [icon]="faChevronRight"></fa-icon>
+                    </div>
+                  </div>
+
+                  <!-- </mat-icon> -->
+                </button>
+                {{ node.name }}
+              </div>
+              <ul [class.example-tree-invisible]="!treeControl.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </ul>
+            </li>
+          </mat-nested-tree-node>
+        </mat-tree>
+
+        <mat-tree [dataSource]="dataSourceMesh" [treeControl]="treeControlMesh" class="example-tree"
+                  *ngIf="meshes.length">
+          <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+            <li class="mat-tree-node row">
+              <div class="col-8" *ngIf="meshSelected === node; else elseBlock">
+                <!--                <input type="radio" name="radioB" (click)="onMeshSelected(node)"/>-->
+                <button (click)="onMeshSelected(node)" style="background-color: #a7a7a7">
+                  {{ node.model.name }}
+                </button>
+              </div>
+              <ng-template #elseBlock>
+                <div class="col-8">
+                  <button (click)="onMeshSelected(node)">
+                    {{ node.model.name }}
+                  </button>
+                </div>
+              </ng-template>
+              <div class="col-4">
+                <button (click)="onClickVisibility(node.model.name + '_m')"
+                        *ngIf="visibility.get(node.model.name + '_m')">
+                  <fa-icon [icon]="faEye"></fa-icon>
+                </button>
+                <button (click)="onClickVisibility(node.model.name + '_m')"
+                        *ngIf="!visibility.get(node.model.name + '_m')">
+                  <fa-icon [icon]="faEyeSlash"></fa-icon>
+                </button>
+              </div>
+            </li>
+          </mat-tree-node>
+
+          <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChild">
+            <li>
+              <div class="mat-tree-node">
+                <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                  <div [ngSwitch]="treeControlMesh.isExpanded(node)">
+                    <div *ngSwitchCase="true">
+                      <fa-icon [icon]="faChevronDown"></fa-icon>
+                    </div>
+                    <div *ngSwitchCase="false">
+                      <fa-icon [icon]="faChevronRight"></fa-icon>
+                    </div>
+                  </div>
+                </button>
+                {{ node.id }}
+              </div>
+              <ul [class.example-tree-invisible]="!treeControlMesh.isExpanded(node)">
+                <ng-container matTreeNodeOutlet></ng-container>
+              </ul>
+            </li>
+          </mat-nested-tree-node>
+        </mat-tree>
+
+        <div id="bottomDiv">
+          <mat-tree [dataSource]="dataSourceJob" [treeControl]="treeControlJob" class="example-tree"
+                    *ngIf="jobs.length">
+            <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+              <li class="mat-tree-node row" *ngIf="node.jobId">
+                <div class="col-8 " *ngIf="meshSelected === node; else elseBlock">
+                  <button mat-raised-button (click)="onJobSelected(node)" style="background-color: #a7a7a7">
+                    <fa-icon icon="sync" [spin]="true"></fa-icon> {{ node.mesh.model.name }}
+                  </button>
+                </div>
+                <ng-template #elseBlock>
+                  <div class="col-8">
+                    <button mat-raised-button (click)="onJobSelected(node)">
+                      <fa-icon icon="sync" [spin]="true"></fa-icon> {{ node.mesh.model.name }}
+                    </button>
+                  </div>
+                </ng-template>
+              </li>
+            </mat-tree-node>
+
+            <mat-nested-tree-node *matTreeNodeDef="let node; when: hasChildJob">
+              <li>
+                <div class="mat-tree-node">
+                  <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+                    <div [ngSwitch]="treeControlJob.isExpanded(node)">
+                      <div *ngSwitchCase="true">
+                        <fa-icon [icon]="faChevronDown"></fa-icon>
+                      </div>
+                      <div *ngSwitchCase="false">
+                        <fa-icon [icon]="faChevronRight"></fa-icon>
+                      </div>
+                    </div>
+                  </button>
+                  {{ node.id }}
+                </div>
+                <ul [class.example-tree-invisible]="!treeControlJob.isExpanded(node)">
+                  <ng-container matTreeNodeOutlet></ng-container>
+                </ul>
+              </li>
+            </mat-nested-tree-node>
+          </mat-tree>
+        </div>
+      </div>
+
+      <div class="col-10">
+        <!--        <jhi-viewer-screen [content]="content" [renderFormat]="renderFormat" [visibility]="getVisibility()"> </jhi-viewer-screen>-->
+        <jhi-viewer-screen
+          [content]="content"
+          [changeInName]="changeInName"
+          [changeInVisibility]="changeInVisibility"
+          [name]="name"
+        >
+        </jhi-viewer-screen>
+      </div>
+    </div>
+  </div>
+</div>

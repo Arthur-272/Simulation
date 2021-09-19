@@ -1,0 +1,25 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo login to dockerhub...
+      - docker login -u solution2020 -p SolutionArchitect@2020 
+      - echo Logging in to Amazon ECR...
+      - aws --version
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=714180691628.dkr.ecr.us-west-2.amazonaws.com/simulation
+  build:
+    commands:
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - chmod +x mvnw
+      - ./mvnw package -DskipTests=true -Pprod jib:build
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo writing image definitions file...
+      - printf '[{"name":"simulation-container","imageUri":"%s"}]' $REPOSITORY_URI:latest > imagedefinitions.json
+      
+artifacts:
+    files: imagedefinitions.json

@@ -1,0 +1,111 @@
+<div *ngIf="model || mesh">
+  <div class="modal-header">
+    <h4 class="modal-title">Run Simulation</h4>
+
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true" (click)="cancel()">&times;</button>
+  </div>
+
+  <div *ngIf="isModel">
+    <div class="modal-body">
+      <form #userInput="ngForm" (ngSubmit)="onSimulate(userInput.value)">
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Model</label>
+          </div>
+          <div class="col-10" *ngIf="model">
+            <input value="{{model.name}}" class="form-control-label mb-3 ml-3" disabled />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Edge Length</label>
+          </div>
+          <div class="col-10">
+            <input type="number" [(ngModel)]="this.edgeLength" class="au-input au-input-xl mb-3 ml-3" name="edgeLength"
+                   ngModel/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Tolerance</label>
+          </div>
+          <div class="col-10">
+            <input type="number" [(ngModel)]="this.tolerance" class="au-input au-input-xl mb-3 ml-3" name="tolerance"
+                   ngModel/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+            </button>
+            <button type="submit" class="btn btn-primary" value="submit">
+              <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span></button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div *ngIf="mesh">
+    <div class="modal-body">
+      <form #userInput="ngForm" (ngSubmit)="onSimulate(userInput.value)">
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Mesh</label>
+          </div>
+          <div class="col-10" *ngIf="mesh.model">
+            <input value="{{mesh.model.name}}" class="form-control-label mb-3 ml-3" disabled />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Edge Length</label>
+          </div>
+          <div class="col-10">
+            <input type="number" [(ngModel)]="this.mesh.edgeLength" class="au-input au-input-xl mb-3 ml-3"
+                   name="edgeLength" ngModel/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-2">
+            <label class="form-control-label mb-3 ml-3">Tolerance</label>
+          </div>
+          <div class="col-10">
+            <input type="number" [(ngModel)]="this.mesh.tolerance" class="au-input au-input-xl mb-3 ml-3"
+                   name="tolerance" ngModel/>
+          </div>
+        </div>
+        <div class="row">
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="cancel()">
+              <fa-icon icon="ban"></fa-icon>&nbsp;<span>Cancel</span>
+            </button>
+            <button type="submit" class="btn btn-primary" ng-disabled="!ngForm" value="submit">
+              <fa-icon icon="save"></fa-icon>&nbsp;<span>Save</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade modeless">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Settings</h4>
+
+      </div>
+      <div class="modal-body">
+        <p>Settings</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>

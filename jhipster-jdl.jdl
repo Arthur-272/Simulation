@@ -1,0 +1,25 @@
+
+entity Mesh {
+	edgeLength Double,
+    epsilon Double
+}
+
+entity Project{
+	name String
+}
+
+entity Accounts{
+	
+}
+
+entity Geometry{
+	name String
+}
+
+entity Job{
+	jobId String,
+    jobStatus String,
+    nCPUs Integer,
+    elapsedTime String,
+    datetime Long
+}
